@@ -4,25 +4,40 @@ import CategoryItemModule from './category-item/category-item';
 import template from './categories.html';
 import './categories.css';
 
+import {categories, GET_CATEGORIES, GET_CURRENT_CATEGORY, category} from './category.state';
+
 class CategoriesController {
-  constructor(CategoriesModel) {
+  constructor($timeout, store) {
     'ngInject';
 
-    this.CategoriesModel = CategoriesModel;
+    angular.extend(this, {
+      $timeout,
+      store
+    });
   }
 
   $onInit() {
-    this.CategoriesModel.getCategories()
-      .then(result => this.categories = result);
+    this.unsubscribe = this.store.subscribe(() => {
+       this.categories = this.store.getState();
+    });
+
+    this.store.dispatch({type: GET_CATEGORIES});
+
+    this.$timeout(( )=> {
+      const data = [
+        {id: 0, name: 'Angular'}
+      ];
+      this.store.dispatch({type: GET_CATEGORIES, payload: data});
+    }, 2000);
   }
 
-  onCategorySelected(category) {
-    this.CategoriesModel.setCurrentCategory(category);
+  onCategorySelected(currentCategory) {
+    this.currentCategory = category(this.currentCategory, {type: GET_CURRENT_CATEGORY, payload: currentCategory});
   }
 
   isCurrentCategory(category) {
-    return this.CategoriesModel.getCurrentCategory() &&
-      this.CategoriesModel.getCurrentCategory().id === category.id;
+    return this.currentCategory &&
+      this.currentCategory.id === category.id;
   }
 }
 

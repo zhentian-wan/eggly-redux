@@ -8,6 +8,10 @@ import ComponentsModule from './components/components';
 import template from './app.html';
 import './app.css';
 
+import {categories, initialCategories} from './components/categories/category.state';
+import Store from './app.store';
+const store = new Store(categories, initialCategories);
+
 const AppComponent = {
   template
 };
@@ -16,6 +20,7 @@ let appModule = angular.module('app', [
     CommonModule.name,
     ComponentsModule.name
   ])
+    .value('store', store)
   .component('app', AppComponent)
 ;
 
