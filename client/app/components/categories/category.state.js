@@ -16,6 +16,24 @@ export const initialCategories = [
 ];
 
 /**
+ * ACTIONS CREATOR
+ */
+export const CategoriesActions = () => {
+  const getCategoreis = (categories) => {
+    return {type: GET_CATEGORIES, payload: categories}
+  };
+
+  const getCurrentCategory = (currentCategory) => {
+    return {type: GET_CURRENT_CATEGORY, payload: currentCategory}
+  };
+
+  return {
+    getCategoreis,
+    getCurrentCategory
+  };
+};
+
+/**
  * REDUCERS
  * @type {string}
  */

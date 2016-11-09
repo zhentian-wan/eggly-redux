@@ -32,7 +32,7 @@ gulp.task('serve', () => {
   const compiler = webpack(config);
 
   serve({
-    port: process.env.PORT || 3000,
+    port: 3333,
     open: false,
     server: { baseDir: root },
     middleware: [

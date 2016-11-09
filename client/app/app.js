@@ -8,7 +8,7 @@ import ComponentsModule from './components/components';
 import template from './app.html';
 import './app.css';
 
-import {categories, initialCategories} from './components/categories/category.state';
+import {categories, initialCategories, CategoriesActions} from './components/categories/category.state';
 import Store from './app.store';
 const store = new Store(categories, initialCategories);
 
@@ -21,6 +21,7 @@ let appModule = angular.module('app', [
     ComponentsModule.name
   ])
     .value('store', store)
+    .factory('CategoriesActions', CategoriesActions)
   .component('app', AppComponent)
 ;
 
