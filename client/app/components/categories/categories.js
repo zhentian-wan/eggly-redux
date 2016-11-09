@@ -7,14 +7,15 @@ import './categories.css';
 import {categories, CategoriesActions, category} from './category.state';
 
 class CategoriesController {
-  constructor($timeout, store, CategoriesActions) {
+  constructor($timeout, CategoriesActions, $ngRedux) {
     'ngInject';
 
     angular.extend(this, {
       $timeout,
-      store,
       CategoriesActions
     });
+
+    this.store = $ngRedux;
   }
 
   $onInit() {
