@@ -8,18 +8,16 @@ import ComponentsModule from './components/components';
 import template from './app.html';
 import './app.css';
 
-import {categories, initialCategories, CategoriesActions} from './components/categories/category.state';
-// import Store from './app.store';
+import { categories, initialCategories, CategoriesActions, category } from './components/categories/category.state';
 import ngRedux from 'ng-redux';
-//const store = new Store(categories, initialCategories);
+import { combineReducers } from 'redux';
+const rootReducers = combineReducers({
+  categories,
+  category
+});
 const config = $ngReduxProvider => {
   'ngInject';
-  // createStoreWith(1p, 2p, 3p, 4p)
-  //1p: reducer
-  //2P: middleware
-  //3p: enhancer
-  //4p: initial state
-  $ngReduxProvider.createStoreWith(categories, [], [], initialCategories);
+  $ngReduxProvider.createStoreWith(rootReducers, []);
 };
 
 const AppComponent = {
@@ -27,13 +25,13 @@ const AppComponent = {
 };
 
 let appModule = angular.module('app', [
-    CommonModule.name,
-    ComponentsModule.name,
-    ngRedux
-  ])
-    .config(config)
-    //.value('store', store)
-    .factory('CategoriesActions', CategoriesActions)
+  CommonModule.name,
+  ComponentsModule.name,
+  ngRedux
+])
+  .config(config)
+  //.value('store', store)
+  .factory('CategoriesActions', CategoriesActions)
   .component('app', AppComponent);
 
 export default appModule;

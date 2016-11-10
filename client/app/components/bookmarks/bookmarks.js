@@ -5,21 +5,20 @@ import template from './bookmarks.html';
 import './bookmarks.css';
 
 class BookmarksController {
-  constructor($scope, CategoriesModel, BookmarksModel) {
+  constructor($ngRedux, BookmarksModel) {
     'ngInject';
-
-    this.$scope = $scope;
-    this.CategoriesModel = CategoriesModel;
+    this.store = $ngRedux;
     this.BookmarksModel = BookmarksModel;
   }
 
   $onInit() {
     this.BookmarksModel.getBookmarks()
       .then(result => this.bookmarks = result);
-
-    this.$scope.$on('onCurrentCategoryUpdated', this.reset.bind(this));
-    this.getCurrentCategory = this.CategoriesModel.getCurrentCategory.bind(this.CategoriesModel);
     this.deleteBookmark = this.BookmarksModel.deleteBookmark;
+
+    this.store.subscribe(() => {
+      this.currentCategory = this.store.getState().category;
+    });
 
     this.reset();
   }

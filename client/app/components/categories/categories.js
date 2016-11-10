@@ -20,21 +20,16 @@ class CategoriesController {
 
   $onInit() {
     this.unsubscribe = this.store.subscribe(() => {
-       this.categories = this.store.getState();
+       this.categories = this.store.getState().categories;
+       this.currentCategory = this.store.getState().category;
     });
 
     this.store.dispatch(this.CategoriesActions.getCategoreis());
-
-    this.$timeout(( )=> {
-      const data = [
-        {id: 0, name: 'Angular'}
-      ];
-      this.store.dispatch(this.CategoriesActions.getCategoreis(data));
-    }, 2000);
   }
 
   onCategorySelected(currentCategory) {
-    this.currentCategory = category(this.currentCategory, this.CategoriesActions.getCurrentCategory(currentCategory));
+    //this.currentCategory = category(this.currentCategory, this.CategoriesActions.getCurrentCategory(currentCategory));
+    this.store.dispatch(this.CategoriesActions.getCurrentCategory(currentCategory));
   }
 
   isCurrentCategory(category) {
