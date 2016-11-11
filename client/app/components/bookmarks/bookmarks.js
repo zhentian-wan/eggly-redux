@@ -48,10 +48,20 @@ class BookmarksController {
 
   saveBookmark(bookmark) {
     if (bookmark.id) {
-      this.BookmarksModel.updateBookmark(bookmark);
+      this.store.dispatch(
+        this.BookmarksActions.saveBookmark(bookmark)
+      )
     } else {
-      this.BookmarksModel.createBookmark(bookmark);
+      this.store.dispatch(
+        this.BookmarksActions.createNewBookmark(bookmark)
+      )
     }
+  }
+
+  deleteBookmark(bookmark){
+    this.store.dispatch(
+      this.BookmarksActions.deleteBookmark(bookmark)
+    )
   }
 
   onSave(bookmark) {

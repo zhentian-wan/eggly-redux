@@ -1,5 +1,10 @@
+import { reject, uniqueId } from "lodash";
+
 export const GET_BOOKMARKS = "GET_BOOKMARKS";
 export const GET_SELECTED_BOOKMARK = "GET_SELECTED_BOOKMARK";
+export const DELETE_BOOKMARK = "DELETE_BOOKMARK";
+export const SAVE_BOOKMARK = "SAVE_BOOKMARK";
+export const CREATE_NEW_BOOKMARK = "CREATE_NEW_BOOKMARK";
 
 /**
  * Initial data
@@ -89,9 +94,34 @@ export const BookmarksActions = ($ngRedux) => {
       payload
     }
   };
+
+  const createNewBookmark = (bookmark) => {
+    bookmark = Object.assign({}, bookmark, {id: uniqueId(100)});
+    return {
+      type: CREATE_NEW_BOOKMARK,
+      payload: bookmark
+    }
+  };
+
+  const deleteBookmark = (bookmark) => {
+    return {
+      type: DELETE_BOOKMARK,
+      payload: bookmark
+    }
+  };
+
+  const saveBookmark = (bookmark) => {
+    return {
+      type: SAVE_BOOKMARK,
+      payload: bookmark
+    }
+  };
   return {
     getBookmarks,
-    getSelectedBookmark
+    getSelectedBookmark,
+    saveBookmark,
+    deleteBookmark,
+    createNewBookmark
   };
 };
 
@@ -102,6 +132,19 @@ export const bookmarks = (state = initialBookmarks, { type, payload }) => {
   switch (type) {
     case GET_BOOKMARKS:
       return payload || state;
+    case SAVE_BOOKMARK:
+      return state.map((b) => {
+        return b.id === payload.id ? payload : b;
+      });
+    case CREATE_NEW_BOOKMARK:
+      return [
+        ...state,
+        payload
+      ];
+    case DELETE_BOOKMARK:
+      return state.filter( (b) => {
+        return b.id !== payload.id;
+      });
     default :
       return state;
   }
