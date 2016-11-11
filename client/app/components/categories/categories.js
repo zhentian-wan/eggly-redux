@@ -27,6 +27,10 @@ class CategoriesController {
     this.store.dispatch(this.CategoriesActions.getCategoreis());
   }
 
+  $onDestory() {
+    this.unsubscribe();
+  }
+
   onCategorySelected(currentCategory) {
     //this.currentCategory = category(this.currentCategory, this.CategoriesActions.getCurrentCategory(currentCategory));
     this.store.dispatch(this.CategoriesActions.getCurrentCategory(currentCategory));

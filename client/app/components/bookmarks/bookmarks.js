@@ -5,30 +5,36 @@ import template from './bookmarks.html';
 import './bookmarks.css';
 
 class BookmarksController {
-  constructor($ngRedux, BookmarksModel) {
+  constructor($ngRedux, BookmarksActions) {
     'ngInject';
     this.store = $ngRedux;
-    this.BookmarksModel = BookmarksModel;
+    this.BookmarksActions = BookmarksActions;
   }
 
   $onInit() {
-    this.BookmarksModel.getBookmarks()
-      .then(result => this.bookmarks = result);
-    this.deleteBookmark = this.BookmarksModel.deleteBookmark;
-
     this.store.subscribe(() => {
       this.currentCategory = this.store.getState().category;
+      this.bookmarks = this.store.getState().bookmarks;
+      this.currentBookmark = this.store.getState().bookmark;
     });
+
+    this.store.dispatch(
+      this.BookmarksActions.getBookmarks()
+    );
 
     this.reset();
   }
 
   createBookmark() {
-    this.currentBookmark = this.initNewBookmark();
+    this.store.dispatch(
+      this.BookmarksActions.getSelectedBookmark()
+    );
   }
 
   editBookmark(bookmark) {
-    this.currentBookmark = bookmark;
+    this.store.dispatch(
+      this.BookmarksActions.getSelectedBookmark(bookmark)
+    );
   }
 
   initNewBookmark() {
