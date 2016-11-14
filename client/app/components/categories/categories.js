@@ -4,10 +4,10 @@ import CategoryItemModule from './category-item/category-item';
 import template from './categories.html';
 import './categories.css';
 
-import {categories, CategoriesActions, category} from './category.state';
+import { categories, CategoriesActions, category } from './category.state';
 
 class CategoriesController {
-  constructor( CategoriesActions, BookmarksActions, $ngRedux) {
+  constructor(CategoriesActions, BookmarksActions, $ngRedux) {
     'ngInject';
 
     angular.extend(this, {
@@ -19,21 +19,34 @@ class CategoriesController {
   }
 
   $onInit() {
-    this.unsubscribe = this.store.subscribe(() => {
-       this.categories = this.store.getState().categories;
-       this.currentCategory = this.store.getState().category;
-    });
+    const actions = Object.assign({}, this.CategoriesActions, this.BookmarksActions);
+    this.unsubscribe = this.store.connect(this.mapStateToThis, actions)(this);
+    this.getCategoreis();
 
-    this.store.dispatch(this.CategoriesActions.getCategoreis());
+    /*this.unsubscribe = this.store.subscribe(() => {
+      this.categories = this.store.getState().categories;
+      this.currentCategory = this.store.getState().category;
+    });*/
+
+    //this.store.dispatch(this.CategoriesActions.getCategoreis());
   }
 
   $onDestory() {
     this.unsubscribe();
   }
 
+  mapStateToThis(state) {
+    return {
+      categories: state.categories,
+      currentCategory: state.currentCategory
+    };
+  }
+
   onCategorySelected(currentCategory) {
-    this.store.dispatch(this.CategoriesActions.getCurrentCategory(currentCategory));
-    this.store.dispatch(this.BookmarksActions.resetBookmark());
+    /*this.store.dispatch(this.CategoriesActions.getCurrentCategory(currentCategory));
+    this.store.dispatch(this.BookmarksActions.resetBookmark());*/
+    this.getCurrentCategory(currentCategory);
+    this.resetBookmark();
   }
 
   isCurrentCategory(category) {
@@ -49,8 +62,8 @@ const CategoriesComponent = {
 };
 
 const CategoriesModule = angular.module('categories', [
-      CategoryItemModule.name
-    ])
+    CategoryItemModule.name
+  ])
     .component('categories', CategoriesComponent)
   ;
 

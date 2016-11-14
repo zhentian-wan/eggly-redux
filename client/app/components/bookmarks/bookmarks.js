@@ -12,29 +12,47 @@ class BookmarksController {
   }
 
   $onInit() {
-    this.store.subscribe(() => {
+
+    this.unsubscribe = this.store.connect(this.mapStateToThis, this.BookmarksActions)(this);
+
+    /*this.store.subscribe(() => {
       this.currentCategory = this.store.getState().category;
       this.bookmarks = this.store.getState().bookmarks;
       this.currentBookmark = this.store.getState().bookmark;
-    });
+    });*/
 
-    this.store.dispatch(
+    /*this.store.dispatch(
       this.BookmarksActions.getBookmarks()
-    );
+    );*/
 
+    this.getBookmarks();
     this.resetBookmark();
   }
 
+  $onDestory() {
+    this.unsubscribe();
+  }
+
+  mapStateToThis(state) {
+    return {
+      currentCategory: state.category,
+      bookmarks: state.bookmarks,
+      currentBookmark: state.bookmark
+    };
+  }
+
   createBookmark() {
-    this.store.dispatch(
+    /*this.store.dispatch(
       this.BookmarksActions.getSelectedBookmark()
-    );
+    );*/
+    this.getSelectedBookmark()
   }
 
   editBookmark(bookmark) {
-    this.store.dispatch(
+    /*this.store.dispatch(
       this.BookmarksActions.getSelectedBookmark(bookmark)
-    );
+    );*/
+    this.getSelectedBookmark(bookmark);
   }
 
   initNewBookmark() {
@@ -46,32 +64,30 @@ class BookmarksController {
     };
   }
 
-  saveBookmark(bookmark) {
-    if (bookmark.id) {
-      this.store.dispatch(
-        this.BookmarksActions.saveBookmark(bookmark)
-      )
-    } else {
-      this.store.dispatch(
-        this.BookmarksActions.createNewBookmark(bookmark)
-      )
-    }
-  }
-
-  deleteBookmark(bookmark){
+  /*deleteBookmark(bookmark) {
     this.store.dispatch(
       this.BookmarksActions.deleteBookmark(bookmark)
     )
-  }
+  }*/
 
   onSave(bookmark) {
-    this.saveBookmark(bookmark);
+    if (bookmark.id) {
+      /*this.store.dispatch(
+       this.BookmarksActions.saveBookmark(bookmark)
+       );*/
+      this.saveBookmark(bookmark);
+    } else {
+      /*this.store.dispatch(
+       this.BookmarksActions.createNewBookmark(bookmark)
+       );*/
+      this.createNewBookmark(bookmark);
+    }
     this.resetBookmark();
   }
 
-  resetBookmark() {
+  /*resetBookmark() {
     this.store.dispatch(this.BookmarksActions.resetBookmark());
-  }
+  }*/
 }
 
 const BookmarksComponent = {
@@ -81,8 +97,8 @@ const BookmarksComponent = {
 };
 
 const BookmarksModule = angular.module('bookmarks', [
-    SaveBookmarksModule.name
-  ])
+  SaveBookmarksModule.name
+])
   .component('bookmarks', BookmarksComponent);
 
 export default BookmarksModule;
