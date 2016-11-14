@@ -22,7 +22,7 @@ class BookmarksController {
       this.BookmarksActions.getBookmarks()
     );
 
-    this.reset();
+    this.resetBookmark();
   }
 
   createBookmark() {
@@ -66,11 +66,11 @@ class BookmarksController {
 
   onSave(bookmark) {
     this.saveBookmark(bookmark);
-    this.reset();
+    this.resetBookmark();
   }
 
-  reset() {
-    this.currentBookmark = null;
+  resetBookmark() {
+    this.store.dispatch(this.BookmarksActions.resetBookmark());
   }
 }
 

@@ -5,6 +5,7 @@ export const GET_SELECTED_BOOKMARK = "GET_SELECTED_BOOKMARK";
 export const DELETE_BOOKMARK = "DELETE_BOOKMARK";
 export const SAVE_BOOKMARK = "SAVE_BOOKMARK";
 export const CREATE_NEW_BOOKMARK = "CREATE_NEW_BOOKMARK";
+export const RESET_BOOKMARK = "RESET_BOOKMARK";
 
 /**
  * Initial data
@@ -116,12 +117,20 @@ export const BookmarksActions = ($ngRedux) => {
       payload: bookmark
     }
   };
+
+  const resetBookmark = () => {
+    return {
+      type: RESET_BOOKMARK,
+      payload: undefined
+    }
+  };
   return {
     getBookmarks,
     getSelectedBookmark,
     saveBookmark,
     deleteBookmark,
-    createNewBookmark
+    createNewBookmark,
+    resetBookmark
   };
 };
 
@@ -152,6 +161,8 @@ export const bookmarks = (state = initialBookmarks, { type, payload }) => {
 
 export const bookmark = (state = initBookmark, { type, payload }) => {
   switch (type) {
+    case RESET_BOOKMARK:
+      return initBookmark;
     case GET_SELECTED_BOOKMARK:
       return payload || state;
     default :

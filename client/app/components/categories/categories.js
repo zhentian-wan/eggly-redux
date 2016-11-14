@@ -7,12 +7,12 @@ import './categories.css';
 import {categories, CategoriesActions, category} from './category.state';
 
 class CategoriesController {
-  constructor($timeout, CategoriesActions, $ngRedux) {
+  constructor( CategoriesActions, BookmarksActions, $ngRedux) {
     'ngInject';
 
     angular.extend(this, {
-      $timeout,
-      CategoriesActions
+      CategoriesActions,
+      BookmarksActions
     });
 
     this.store = $ngRedux;
@@ -32,8 +32,8 @@ class CategoriesController {
   }
 
   onCategorySelected(currentCategory) {
-    //this.currentCategory = category(this.currentCategory, this.CategoriesActions.getCurrentCategory(currentCategory));
     this.store.dispatch(this.CategoriesActions.getCurrentCategory(currentCategory));
+    this.store.dispatch(this.BookmarksActions.resetBookmark());
   }
 
   isCurrentCategory(category) {
