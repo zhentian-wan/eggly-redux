@@ -12,7 +12,8 @@
     "lodash": "^4.13.1",
     "ng-redux": "3.4.0-beta.1",
     "normalize.css": "4.1.1",
-    "redux": "^3.6.0"
+    "redux": "^3.6.0",
+    "redux-thunk": "2.1.0"
   },
   "devDependencies": {
     "angular-mocks": "1.5.7",

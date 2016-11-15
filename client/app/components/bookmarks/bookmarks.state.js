@@ -77,13 +77,34 @@ const initBookmark = {
 /**
  * Actions
  */
-export const BookmarksActions = ($ngRedux) => {
+export const BookmarksActions = ($ngRedux, $http, $q) => {
   'ngInject'
-  const getBookmarks = (bookmarks) => {
+
+  const FETCH = {
+    bookmarks: 'data/bookmarks.json'
+  };
+  /*const getBookmarks = (bookmarks) => {
     return {
       type: GET_BOOKMARKS,
       payload: bookmarks
     };
+  };*/
+  const getBookmarks = () => {
+    return (dispatch, getState) => {
+      const {bookmarks} = getState();
+      if(bookmarks.length > 0) {
+        return $q.when(bookmarks);
+      } else {
+        return $http.get(FETCH.bookmarks)
+          .then(res => res.data)
+          .then((payload) => {
+            return dispatch({
+              type: GET_BOOKMARKS,
+              payload
+            });
+          })
+      }
+    }
   };
   const getSelectedBookmark = (bookmark = {}) => {
     const {category} = $ngRedux.getState();
@@ -137,7 +158,7 @@ export const BookmarksActions = ($ngRedux) => {
 /**
  * Reducer
  */
-export const bookmarks = (state = initialBookmarks, { type, payload }) => {
+export const bookmarks = (state = [], { type, payload }) => {
   switch (type) {
     case GET_BOOKMARKS:
       return payload || state;

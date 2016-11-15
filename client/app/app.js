@@ -4,7 +4,7 @@ import 'normalize.css';
 import angular from 'angular';
 import CommonModule from './common/common';
 import ComponentsModule from './components/components';
-
+import thunk from 'redux-thunk';
 import template from './app.html';
 import './app.css';
 
@@ -20,7 +20,7 @@ const rootReducers = combineReducers({
 });
 const config = $ngReduxProvider => {
   'ngInject';
-  $ngReduxProvider.createStoreWith(rootReducers, []);
+  $ngReduxProvider.createStoreWith(rootReducers, [thunk]);
 };
 
 const AppComponent = {
